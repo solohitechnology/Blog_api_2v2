@@ -1,9 +1,11 @@
-const router = require('express').Router();
-const User = require('../models/Users');
-const bcrypt = require('bcrypt');
+ const User = '../models/Users';
+// const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt';
 
-//REGISTER
-router.post('/register', async (req, res) => {
+
+// REGISTER
+
+export const Register = async (req, res, next) => {
     try {
         const salt = bcrypt.genSaltSync(10);
         const hashpass = bcrypt.hashSync(req.body.password, salt)
@@ -18,21 +20,20 @@ router.post('/register', async (req, res) => {
 } catch (err) {
     res.status(500).json(err);
 }
-});
+}
 
-//PASSWORD
-router.post('/login', async (req, res) => {
+// //PASSWORD
+export const Login = async (req, res, next) => {p
     try {
-         const user = await User.findOne({ username: req.body.username });
-         !user && res.status(400).json('wrong credentials');
+        const user = await User.findOne({ username: req.body.username });
+        !user && res.status(400).json('wrong credentials');
 
-         const iscorrectpass = await bcrypt.compare(req.body.password, user.password)
-         !iscorrectpass && res.status(400).json('wrong credentials')
-            
-         const { password, ...others} =  res.status(200).json( others )
-    }catch (err) {
-        res.status(500).json(err)
-    }
-})
+        const iscorrectpass = await bcrypt.compare(req.body.password, user.password)
+        !iscorrectpass && res.status(400).json('wrong credentials')
+           
+        const { password, ...others} =  res.status(200).json( others )
+   }catch (err) {
+       res.status(500).json(err)
+   }
+};
 
-module.exports = router;

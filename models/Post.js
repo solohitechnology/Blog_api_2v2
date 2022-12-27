@@ -26,4 +26,4 @@ const PostSchema = new mongoose.Schema({
 {timestamp: true}
 );
 
-module.exports = mongoose.Schema('Post', userSchema)
+module.exports = mongoose.Schema('Post', PostSchema)
