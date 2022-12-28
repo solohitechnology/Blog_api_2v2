@@ -18,25 +18,22 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//MONGODB CONNECTION
+mongoose.connect(process.env.MONGO_URL, {
+}).then(() => console.log('DB connection success'))
+    .catch((err) => console.log(err));
 
-// mongoose.connect(process.env.MONGO_URL, {
-//     useNewUrlparser: true,
-//     userUnifiedTopology: true,
-//     useCreateIndex: true,
-// }).then(() => console.log('DB connection success'))
-//   .catch((err) => console.log(err));
-
-    //UPLOAD ROUTES
+//UPLOAD ROUTES
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb( null, 'image');
+        cb(null, 'image');
     },
     filename: (req, file, cb) => {
-          cb(null, req.body.name);
+        cb(null, req.body.name);
     }
 })
 
-const upload = multer({storage: storage})
+const upload = multer({ storage: storage })
 app.post('/solo/upload', upload.single('file'), (req, res) => {
     res.status(200).json('file has been uploaded')
 })
